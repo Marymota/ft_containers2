@@ -181,7 +181,7 @@ namespace ft {
 		bool empty() const {	return _finish == _data; }
 		
 		void reserve(size_type n) {	// reservers storage if capacity is less than new_cap
-			if (n > capacity()) {
+			if (n >= capacity()) {
 				pointer start = _allocator.allocate(new_capacity(n)); 
 				pointer finish = start;
 		//	copy from start of old vec to position
@@ -297,7 +297,7 @@ namespace ft {
 		{
 			size_type len = size() + n;
 
-			if (len < capacity() && position == end())
+			if (len <= capacity() && position == end())
 				while (n--) insert(position, val);
 			else {
 				pointer start = _allocator.allocate(new_capacity(len));
@@ -322,8 +322,8 @@ namespace ft {
 		void insert (iterator position, InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 		{
-			size_type len = size() + ft::distance(first, last) + 1;
-			if (((len) < capacity()) && position == end()) {
+			size_type len =	size() + ft::distance(first, last);
+			if ((len < capacity()) && position == end()) {
 				for (; first != last; first++, _finish++)
 					insert(position, *first);
 			}
